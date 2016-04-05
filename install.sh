@@ -1,20 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
 
-install_path=/usr/local/bin
-slacktee_script="slacktee.sh"
+DIR=$(cd "$(dirname "$0")"; pwd -P)
+INSTALL_PATH=${1-/usr/local/bin}
+SCRIPT="slacktee.sh"
+SOURCE="https://cdn.rawgit.com/ojio/slacktee/master/$SCRIPT"
 
-if [ $# -ne 0 ]; then
-    install_path=$1
-fi
-script_dir=$( cd $(dirname $0); pwd -P )
+# cp "$DIR/$SCRIPT" "$INSTALL_PATH"
+curl -Lo "$INSTALL_PATH/$SCRIPT" "$SOURCE"
+chmod +x "$INSTALL_PATH/$SCRIPT"
 
-# Copy slacktee.sh to /usr/local/bin 
-cp "$script_dir/$slacktee_script" "$install_path"
+echo "$SCRIPT has been installed to $INSTALL_PATH"
 
-# Set execute permission
-chmod +x "$install_path/$slacktee_script"
-
-echo "$slacktee_script has been installed to $install_path"
-
-# Execute slacktee.sh with --setup option
-"$install_path/$slacktee_script" --setup
+"$INSTALL_PATH/$SCRIPT" --setup
